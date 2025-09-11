@@ -24,16 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // email validation
     if (empty($_POST["email"])) {
         $emailErr = "email required";
+        echo $email = "email";
     } elseif (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
         $emailErr = "Invalid email format";
     } else{
-        $email = $POST_["email"];
+        $email = $_POST["email"];
     }
 
     // password validation
     if (empty($_POST["password"])) {
         $passwordErr = "Password required";
-    } elseif (strlen("$password") < 6) {
+    } elseif (strlen($_POST["password"])<6) {
         $passwordErr = "Password should be at least 6 characters";
     } else {
         $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
@@ -46,23 +47,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = $_POST["role"];
     }
 
-    // save to db
-    if ($usernameErr == "" && $companyErr == "" && $emailErr == "" && $passwordErr == "" && $roleErr == "") {
         $sql = "INSERT INTO users (username, company, email, password, role, status) 
         VALUES('$username', '$company', '$email', '$password', 'seller', 'pending')";
-    }
 
-    // connection
-    if (!empty($sql)) {
         if ($conn->query($sql) === TRUE) {
            header("Location: login.php");
            exit();
        } else {
            $success = "Error: " . $conn->error;
        }
-    } else {
-        // $success = "Error: " . $conn->error;
-    }
+    
 }
 ?>
 
