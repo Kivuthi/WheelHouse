@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["username"])) {
         echo $usernameErr = "Name required";
     } else {
-        $username = htmlspecialchars($_POST("username"));
+        $username = htmlspecialchars($_POST["username"]);
     }
 
     // company validation
@@ -74,20 +74,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form method="POST" class="form" id="signupForm">
         <h2>Sign Up</h2>
         <input type="text" placeholder="Name" name="username" required />
+         <span style="color:red;"><?php echo $usernameErr; ?></span><br><br>
+
         <input type="text" placeholder="Company" name="company" required>
+         <span style="color:red;"><?php echo $companyErr; ?></span><br><br>
+
         <input type="email" placeholder="Email" name="email" required />
+         <span style="color:red;"><?php echo $emailErr; ?></span><br><br>
+
         <input type="password" placeholder="Password" name="password" required />
+         <span style="color:red;"><?php echo $passwordErr; ?></span><br><br>
+
         <div class="role-section">
             <label for="role">Role:</label><br>
             <label>
                 <input type="radio" name="role" value="seller" required /> Seller
+                 <span style="color:red;"><?php echo $roleErr; ?></span><br><br>
             </label>
             <label>
                 <input type="radio" name="role" value="buyer" required /> Buyer
+                 <span style="color:red;"><?php echo $roleErr; ?></span><br><br>
             </label>
         </div>
 
         <button type="submit">Register</button>
     </form>
+    <?php if (!empty($success)) echo "<h3 style='color:green;'>$success</h3>"; ?>
 </body>
 </html>
