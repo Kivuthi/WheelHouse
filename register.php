@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // connectiong
     if ($conn->query($sql) === TRUE) {
         $success = "Registration Successful";
+        header("Location: login.php");
     } else {
         $success = "Error: " . $conn->error;
     }
@@ -70,5 +71,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     
+    <form method="POST" class="form" id="signupForm">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Name" name="username" required />
+        <input type="text" placeholder="Company" name="company" required>
+        <input type="email" placeholder="Email" name="email" required />
+        <input type="password" placeholder="Password" name="password" required />
+        <div class="role-section">
+            <label for="role">Role:</label><br>
+            <label>
+                <input type="radio" name="role" value="seller" required /> Seller
+            </label>
+            <label>
+                <input type="radio" name="role" value="buyer" required /> Buyer
+            </label>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
 </body>
 </html>
