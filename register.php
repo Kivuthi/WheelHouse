@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["password"])) {
         $passwordErr = "Password required";
     } elseif (strlen("$password") < 6) {
-        $passwordErr = "Password sshould be at least 6 characters";
+        $passwordErr = "Password should be at least 6 characters";
     } else {
         $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     }
@@ -48,15 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // save to db
     if ($usernameErr == "" && $companyErr == "" && $emailErr == "" && $passwordErr == "" && $roleErr == "") {
-        $sql = "INSERT INTO WheelHouse (username, company, email, password, role) VALUES('$username', '$company', '$email', '$password', '$role')";
+        $sql = "INSERT INTO users (username, company, email, password, role, status) 
+        VALUES('$username', '$company', '$email', '$password', 'seller', 'pending')";
     }
 
-    // connectiong
-    if ($conn->query($sql) === TRUE) {
-        $success = "Registration Successful";
-        header("Location: login.php");
+    // connection
+    if (!empty($sql)) {
+        if ($conn->query($sql) === TRUE) {
+           header("Location: login.php");
+           exit();
+       } else {
+           $success = "Error: " . $conn->error;
+       }
     } else {
-        $success = "Error: " . $conn->error;
+        // $success = "Error: " . $conn->error;
     }
 }
 ?>
@@ -74,19 +79,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form method="POST" class="form" id="signupForm">
         <h2>Sign Up</h2>
         <input type="text" placeholder="Name" name="username" required />
-         <span style="color:red;"><?php echo $usernameErr; ?></span><br><br>
+         <span style="color:red;"><?php echo $usernameErr; ?></span>
 
         <input type="text" placeholder="Company" name="company" required>
-         <span style="color:red;"><?php echo $companyErr; ?></span><br><br>
+         <span style="color:red;"><?php echo $companyErr; ?></span>
 
         <input type="email" placeholder="Email" name="email" required />
-         <span style="color:red;"><?php echo $emailErr; ?></span><br><br>
+         <span style="color:red;"><?php echo $emailErr; ?></span>
 
         <input type="password" placeholder="Password" name="password" required />
-         <span style="color:red;"><?php echo $passwordErr; ?></span><br><br>
+         <span style="color:red;"><?php echo $passwordErr; ?></span>
 
         <div class="role-section">
-            <label for="role">Role:</label><br>
+            <label for="role">Role:</label><br><br>
             <label>
                 <input type="radio" name="role" value="seller" required /> Seller
                  <span style="color:red;"><?php echo $roleErr; ?></span><br><br>
